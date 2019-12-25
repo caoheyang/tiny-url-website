@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .form {
+      width: 500px;
+      margin: 0 auto;
+    }
+
+    .form-item span {
+      width: 100px;
+      display: inline-block;
+      text-align: right;
+    }
+
+    .form-item input {
+      width: 250px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form">
+    <div class="form-item">
+      <span>URL:</span>
+      <input type="text" class="input-s">
+      <button class="generateBtn">shorten</button>
+    </div>
+    <div class="form-item">
+      <span>Comment:</span>
+      <input type="text" class="input-s1">
+      <button class="btn2">copy</button>
+    </div>
+  </div>
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+  <script>
+    $('.generateBtn').click(function () {
+      const val = $('.input-s').val();
+      if (!val.trim()) {
+        alert('请输入URL');
+        return;
+      }
+      const reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+      if (!reg.test(val)) {
+        alert('请输入有效的URL');
+        return;
+      }
+      $.ajax({
+        url: " https://w4biym9rel.execute-api.us-east-1.amazonaws.com/beta/data/shorten",
+        type: 'POST',
+        xhrFields: {
+          withCredentials: false // 此字段标识要跨域传数据
+        },
+        crossDomain: true,
+        contentType: "application/json",
+        // 设置的是请求参数
+        data: {
+          "longUrl": val
+        },
+        // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
+        dataType: 'json',
+        success: function (res) {
+          // 一旦设置的 dataType 选项，就不再关心 服务端 响应的 Content-Type 了
+          // 客户端会主观认为服务端返回的就是 JSON 格式的字符串
+          $('.input-s1').val(res.shortSourceId);
+          console.log(res)
+        }
+      })
+    })
+
+    $('.btn2').click(function () {
+      $('.input-s1').select();
+      document.execCommand("Copy");
+    })
+
+    $('.input-s').focus(function () {
+      $('.input-s1').val('');
+    })
+  </script>
+</body>
+
+</html>
