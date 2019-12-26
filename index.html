@@ -50,7 +50,7 @@
         alert('请输入有效的URL');
         return;
       }
-      $.ajax({
+      $.post({
         url: " https://w4biym9rel.execute-api.us-east-1.amazonaws.com/beta/data/shorten",
         type: 'POST',
         xhrFields: {
@@ -60,7 +60,7 @@
         contentType: "application/json",
         // 设置的是请求参数
         data: {
-          "longUrl": val
+          "longUrl": encodeURIComponent(val)
         },
         // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
         dataType: 'json',
