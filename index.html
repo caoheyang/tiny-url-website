@@ -50,9 +50,8 @@
         alert('请输入有效的URL');
         return;
       }
-
       $.ajax({
-        url: " https://w4biym9rel.execute-api.us-east-1.amazonaws.com/beta/data/shorten",
+        url: " https://fpzox03era.execute-api.us-east-1.amazonaws.com/beta/data/shorten",
         type: 'POST',
         xhrFields: {
           withCredentials: false // 此字段标识要跨域传数据
@@ -61,10 +60,10 @@
         contentType: "application/json",
         // 设置的是请求参数
         data: JSON.stringify({
-          "longUrl": encodeURIComponent(val)
+          "longUrl": decodeURIComponent(val)
         }),
         headers: {
-          'Content-Type': 'application/json' 
+          'Content-Type': 'application/json' //application/x-www-form-urlencoded  application/json
         },
         // 用于设置响应体的类型 注意 跟 data 参数没关系！！！
         dataType: 'json',
